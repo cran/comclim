@@ -1,0 +1,15 @@
+4a4ecb850b376bcf7be416ec3780baa7 *DESCRIPTION
+f0d00cc261b583a5410b5c191987efdc *NAMESPACE
+666abff5729a2752740ea4f8c8506f76 *R/comclim.R
+1ff70037ee45ccb586fb545fbd7c2b5d *man/CommunityClimateInput-class.Rd
+f44e1bb886cedf847a1c0e0b51565d7d *man/CommunityClimateStatistics-class.Rd
+99634bae0caaea15337a2fdd4497872d *man/climatedeviations.Rd
+41c666b9d02c0b3a8828bd9b87f063df *man/climatestatistics.Rd
+dd0f5a28d6de4be51f9650700631dbbe *man/comclim-package.Rd
+77d00eb1e59401d869e7833f6f1acd9e *man/communityclimate.Rd
+0034cfd8a5972f434d977983776d0d19 *man/generatedemodata.Rd
+e1f03e7adb6e9b7309ff9cfee22c36e8 *man/inputcommunitydata.Rd
+c7d8cca575749bccf5b95beaf5c652a5 *man/plot.CommunityClimateInput.Rd
+4464b94462966d868bd5dea02e201b1b *man/plot.CommunityClimateStatistics.Rd
+fcc241f642175f407a6cbe0de1db828e *man/summary.CommunityClimateInput.Rd
+d8378f662b6e42978a32d20b035aaee6 *man/summary.CommunityClimateStatistics.Rd
