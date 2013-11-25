@@ -48,7 +48,7 @@ None; used for the side-effect of producing a plot.
 community_richness_5 <- generatedemodata()
 result_community <- communityclimate(community_richness_5,
   climateaxes=c("ClimateAxis1","ClimateAxis2","ClimateAxis3"),
-	numreplicates=100)
+	numreplicates=25)
 
 # deviations plot
 plot(result_community,deviations=TRUE)

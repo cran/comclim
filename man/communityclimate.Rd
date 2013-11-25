@@ -7,7 +7,7 @@ Community climate analysis
 \description{
 Performs a community climate analysis. The algorithm first computes the inferred climate at t1 based on sampling from the climate niches of the species in a community at t1 relative to the observed climate at t2, and determines their volume at t1 (Delta) and lag at t1 relative to t2 (Lambda). The algorithm then repeats the process for a large set of null communities, performing a richness-preserving weighted sample with replacement from the regional pool, and creates a null distribution of Delta and Lambda. Finally, community climate deviations (delta and lambda) are computed as robust standard effect sizes based on the observed and null values.
 
-Values of delta < 0 indicate environmental filtering at t1, while values > 0 indicate environmental permissiveness at t1 and values = 0 indicate no difference between regional and local processes at t1. Values of lambda < 0 indicate climate tracking of species at t1 relative to climate at t2, while values > 0 indicate dispersal limitation of species at t1 relative to t2 and values = 0 indicate no difference between regional and local processes for species at t1 relative to t2.
+Values of delta < 0 indicate environmental filtering at t1, while values > 0 indicate environmental permissiveness at t1 and values = 0 indicate no difference between regional and local processes at t1. Values of lambda < 0 indicate weak effects of species interactions or climate tracking of species at t1 relative to climate at t2, while values > 0 indicate strong effects of species interactions or dispersal limitation of species at t1 relative to climate at t2 and values = 0 indicate no difference between regional and local processes for species at t1 relative to t2.
 
 Actual values of Delta and Lambda indicate the absolute levels of climate space occupancy (Delta) at t1, or absolute mismatch between community composition at t1 and local climate at t2 (Lambda).
 
@@ -51,7 +51,7 @@ community_richness_5 <- generatedemodata()
 # three dimensional analysis
 result_community <- communityclimate(community_richness_5,
   climateaxes=c("ClimateAxis1","ClimateAxis2","ClimateAxis3"),
-	numreplicates=100)
+	numreplicates=25)
   
 # by construction of the example, should yield inferences of
 # delta < 0 (environmental filtering) and

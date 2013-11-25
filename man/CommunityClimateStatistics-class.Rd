@@ -18,17 +18,4 @@ Objects can be created by calls of the form \code{new("CommunityClimateStatistic
     \item{\code{deviations}:}{Object of class \code{"list"} A lis with elements reflecting community climate deviations. See \code{\link{climatedeviations}} for a helper function and more information. }
   }
 }
-
-
-\examples{
-community_richness_5 <- generatedemodata()
-
-# three dimensional analysis
-result_community <- communityclimate(community_richness_5,
-  climateaxes=c("ClimateAxis1","ClimateAxis2","ClimateAxis3"),
-  numreplicates=100)
-  
-summary(result_community)
-
-}
 \keyword{classes}
