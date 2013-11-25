@@ -3,3 +3,5 @@ exportClasses(
     "CommunityClimateInput",
      "CommunityClimateStatistics" 
 )
+
+import(methods)

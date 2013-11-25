@@ -136,7 +136,7 @@ By construction, the example defined a community whose volume was smaller than t
 summary(result_community)
 @
 
-Looking at the deviations, \texttt{result\_community\$deviation\_volumeMagnitude} (i.e. $\delta(t_1)$) is significantly smaller than zero, as predicted. Similarly, \texttt{result\_community\$deviation\_lagMagnitude} (i.e. $\lambda(t_1,t_2)>0$) is significantly greater than zero, as expected.
+Looking at the deviations, \texttt{result\_community\$deviation\_volumeMagnitude} (i.e. $\delta(t_1)$) is significantly smaller than zero, as predicted. Similarly, \texttt{result\_community\$deviation\_mismatchMagnitude} (i.e. $\lambda(t_1,t_2)>0$) is significantly greater than zero, as expected.
 
 To visualize these inferences, it is also possible to plot a community climate diagram.
 
@@ -146,9 +146,9 @@ plot(result_community)
 @
 \end{center}
 
-Here I can confirm that the community has smaller climate volume (red circle vs gray circles) and larger climate lag (red vector vs gray vectors) than expected. The community climate deviations are summarized as the figure's title.
+Here I can confirm that the community has smaller climate volume (red circle vs gray circles) and larger climate mismatch (red vector vs gray vectors) than expected. The community climate deviations are summarized as the figure's title.
 
-It is also possible to directly plot the null and observed values for each community climate statisic, along with projections of the lag vector along each climate axis. The gray lines show the kernel-smoothed null distribution along with the 25\% and 75\% quantiles, and the red line shows the observed value. 
+It is also possible to directly plot the null and observed values for each community climate statisic, along with projections of the mismatch vector along each climate axis. The gray lines show the kernel-smoothed null distribution along with the 25\% and 75\% quantiles, and the red line shows the observed value. 
 
 \begin{center}
 <<label=figure3,fig=TRUE,echo=TRUE>>=
@@ -156,7 +156,7 @@ plot(result_community, deviations=TRUE)
 @
 \end{center}
 
-Based on all of these results, I would infer that the community is structured by environmental filtering and also by dispersal limitation or species interactions.
+Based on all of these results, I would infer that the community is structured by environmental filtering and also by environmental disequilibrium.
 
 \section{Summary}
 In short, the necessary steps to using the \texttt{comclim} package on your own data are:

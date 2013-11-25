@@ -20,6 +20,6 @@ A CommunityClimateStatistics object.
 \value{
 A named list of deviations, with each element containing a standard effect size (ses) and two-tailed p-value (pvalue) for each deviation
 \item{deviation_volumeMagnitude }{A two element vector for climate volume (delta)}
-\item{deviation_lagMagnitude }{A two element vector for climate lag (lambda)}
-\item{deviation_lagDirections }{A two column data frame for climate lag along each climate axis (lambda_i), with row names corresponding to each axis}
+\item{deviation_mismatchMagnitude }{A two element vector for climate mismatch (lambda)}
+\item{deviation_mismatchDirections }{A two column data frame for climate mismatch along each climate axis (lambda_i), with row names corresponding to each axis}
 }

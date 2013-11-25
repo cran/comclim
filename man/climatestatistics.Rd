@@ -22,7 +22,7 @@ A named list:
 \item{inferredClimate }{A vector with names corresponding to climate axes, representing the inferred climate determined by overlapping niches of all species in the community at t1.}
 \item{observedClimate }{A vector with names corresponding to climate axes, representing the observed climate at t2.}
 \item{volumeMagnitude}{A number representing the climate volume at t1 (Delta)}
-\item{lagMagnitude}{A number representing the magnitude of the climate lag at t1 relative to the climate at t2 (Lambda)}
-\item{lagDirections}{A vector with names corresponding to climate axes, representing the climate lag projected along each axis at t1 relative to the climate at t2.}
+\item{mismatchMagnitude}{A number representing the magnitude of the climate mismatch at t1 relative to the climate at t2 (Lambda)}
+\item{mismatchDirections}{A vector with names corresponding to climate axes, representing the climate mismatch projected along each axis at t1 relative to the climate at t2.}
 %% ...
 }

@@ -5,7 +5,7 @@
 Draws community climate diagram.
 }
 \description{
-Produces either a deviations plot or a community climate diagram. The deviations plot compares null distributions (black) and observed values (red) for volume, lag, and lag along each axis, along with the interquartile range of null values. The community climate diagram shows the location of the community (red points) and null communities (black points) in climate space at t1, and compares it to the observed climate at t2 (open black point). The climate volume for each is shown as a circle, and the climate lag is shown as a vector connecting the inferred climate at t1 to the observed climate at t2.
+Produces either a deviations plot or a community climate diagram. The deviations plot compares null distributions (black) and observed values (red) for volume, mismatch, and mismatch along each axis, along with the interquartile range of null values. The community climate diagram shows the location of the community (red points) and null communities (black points) in climate space at t1, and compares it to the observed climate at t2 (open black point). The climate volume for each is shown as a circle, and the climate mismatch is shown as a vector connecting the inferred climate at t1 to the observed climate at t2.
 }
 \usage{
 \method{plot}{CommunityClimateStatistics}(x, deviations = FALSE, axisnames = NULL, 

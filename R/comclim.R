@@ -66,18 +66,18 @@ climatevolume <- function(data)
 	return(mediandistance)
 }
 
-climatelag <- function(data, climate)
+climatemismatch <- function(data, climate)
 {	
 	n <- names(climate)
 	climate <- as.numeric(climate); names(climate) <- n
 	
 	inferredclimate <- apply(data, 2, median, na.rm=TRUE)
 	
-	lag <- inferredclimate - climate
+	mismatch <- inferredclimate - climate
 	
-	lagmagnitude <- sqrt(sum(lag^2))
+	mismatchmagnitude <- sqrt(sum(mismatch^2))
 	
-	result <- list(inferredclimate=inferredclimate,observedclimate=climate, lag=lag, lagmagnitude=lagmagnitude)
+	result <- list(inferredclimate=inferredclimate,observedclimate=climate, mismatch=mismatch, mismatchmagnitude=mismatchmagnitude)
 
 	return(result)
 }
@@ -96,9 +96,9 @@ computestatisticsfromsamples <- function(sampledpoints, observedclimate)
 
 		volume <- climatevolume(nichesample)
 		
-		climatelag <- climatelag(nichesample, observedclimate)
+		climatemismatch <- climatemismatch(nichesample, observedclimate)
 		
-		result[[i]] <- list(nichesample=nichesample, volume=volume, climatelag=climatelag)
+		result[[i]] <- list(nichesample=nichesample, volume=volume, climatemismatch=climatemismatch)
 	}
 	
 	return(result)
@@ -112,15 +112,15 @@ averagestatisticsacrossreplicates <- function(stats)
 	
 	volumeMagnitude <- mean(sapply(stats, function(x) { x$volume }), na.rm=TRUE)
 
-	lagMagnitude <- mean(sapply(stats, function(x) { x$climatelag$lagmagnitude }), na.rm=TRUE)
+	mismatchMagnitude <- mean(sapply(stats, function(x) { x$climatemismatch$mismatchmagnitude }), na.rm=TRUE)
 	
-	lagDirections <- rowMeans(sapply(stats, function(x) { x$climatelag$lag }), na.rm=TRUE)
+	mismatchDirections <- rowMeans(sapply(stats, function(x) { x$climatemismatch$mismatch }), na.rm=TRUE)
 
-	inferredClimate <- rowMeans(sapply(stats, function(x) { x$climatelag$inferredclimate }), na.rm=TRUE)
+	inferredClimate <- rowMeans(sapply(stats, function(x) { x$climatemismatch$inferredclimate }), na.rm=TRUE)
 	
-	observedClimate <- rowMeans(sapply(stats, function(x) { x$climatelag$observedclimate }), na.rm=TRUE)
+	observedClimate <- rowMeans(sapply(stats, function(x) { x$climatemismatch$observedclimate }), na.rm=TRUE)
 	
-	return(list(meanNiches= meanNiches, inferredClimate=inferredClimate, observedClimate=observedClimate, volumeMagnitude=volumeMagnitude, lagMagnitude=lagMagnitude, lagDirections=lagDirections))
+	return(list(meanNiches= meanNiches, inferredClimate=inferredClimate, observedClimate=observedClimate, volumeMagnitude=volumeMagnitude, mismatchMagnitude=mismatchMagnitude, mismatchDirections=mismatchDirections))
 }
 
 pvalue_twotailed <- function(observed, nulldistribution)
@@ -154,20 +154,20 @@ assigndeviations <- function(observed, null)
 	null_volumeMagnitude <- sapply(null, function(x) { x$volumeMagnitude })
 	deviation_volumeMagnitude <- reportdeviations(observed=obs_volumeMagnitude, nulldistribution=null_volumeMagnitude)
 	
-	obs_lagMagnitude = observed$lagMagnitude
-	null_lagMagnitude = sapply(null, function(x) { x$lagMagnitude })
-	deviation_lagMagnitude <- reportdeviations(observed= obs_lagMagnitude, nulldistribution=null_lagMagnitude)
+	obs_mismatchMagnitude = observed$mismatchMagnitude
+	null_mismatchMagnitude = sapply(null, function(x) { x$mismatchMagnitude })
+	deviation_mismatchMagnitude <- reportdeviations(observed= obs_mismatchMagnitude, nulldistribution=null_mismatchMagnitude)
 
-	null_lagDirections <- sapply(null, function(x) {x$lagDirections})
-	obs_lagDirections <- observed$lagDirections
-	deviation_lagDirections <- matrix(NA, nrow=length(obs_lagDirections),ncol=2)
-	dimnames(deviation_lagDirections) <- list(names(obs_lagDirections),c("ses","pvalue"))
-	for (i in 1:nrow(null_lagDirections))
+	null_mismatchDirections <- sapply(null, function(x) {x$mismatchDirections})
+	obs_mismatchDirections <- observed$mismatchDirections
+	deviation_mismatchDirections <- matrix(NA, nrow=length(obs_mismatchDirections),ncol=2)
+	dimnames(deviation_mismatchDirections) <- list(names(obs_mismatchDirections),c("ses","pvalue"))
+	for (i in 1:nrow(null_mismatchDirections))
 	{
-		deviation_lagDirections[i,] <- reportdeviations(observed=obs_lagDirections[i], null_lagDirections[i,])
+		deviation_mismatchDirections[i,] <- reportdeviations(observed=obs_mismatchDirections[i], null_mismatchDirections[i,])
 	}
 	
-	return(list(deviation_volumeMagnitude=deviation_volumeMagnitude, deviation_lagMagnitude=deviation_lagMagnitude, deviation_lagDirections=deviation_lagDirections))
+	return(list(deviation_volumeMagnitude=deviation_volumeMagnitude, deviation_mismatchMagnitude=deviation_mismatchMagnitude, deviation_mismatchDirections=deviation_mismatchDirections))
 }
 
 communityclimate <- function(object, climateaxes=NULL, numreplicates=50, numsamplesperspecies=10,verbose=TRUE)
@@ -317,16 +317,16 @@ plotDeviation <- function(x, whichdeviation)
 		null <- sapply(x@nullStats, function(x) { x$volumeMagnitude })
 		name <- expression(paste(Delta))
 	}
-	else if (whichdeviation=="Lag")
+	else if (whichdeviation=="Mismatch")
 	{
-		obs = x@obsStats$lagMagnitude
-		null <- sapply(x@nullStats, function(x) { x$lagMagnitude })
+		obs = x@obsStats$mismatchMagnitude
+		null <- sapply(x@nullStats, function(x) { x$mismatchMagnitude })
 		name <- expression(paste(Lambda))
 	}
-	else if (whichdeviation %in% row.names(x@deviations$deviation_lagDirections))
+	else if (whichdeviation %in% row.names(x@deviations$deviation_mismatchDirections))
 	{
-		obs = x@obsStats$lagDirections[whichdeviation]
-		null <- sapply(x@nullStats, function(x) { x$lagDirections[whichdeviation] })
+		obs = x@obsStats$mismatchDirections[whichdeviation]
+		null <- sapply(x@nullStats, function(x) { x$mismatchDirections[whichdeviation] })
 		name <- paste("Lambda",whichdeviation)
 	}
 	else
@@ -341,12 +341,12 @@ plot.CommunityClimateStatistics <- function(x, deviations=FALSE, axisnames=NULL,
 {	
 	if (deviations)
 	{
-		axes <- row.names(x@deviations$deviation_lagDirections)
+		axes <- row.names(x@deviations$deviation_mismatchDirections)
 		numaxes <- 2+length(axes)
 		par(mfrow=c(ceiling(numaxes/2),2))
 		
 		plotDeviation(x,"Volume")
-		plotDeviation(x,"Lag")
+		plotDeviation(x,"Mismatch")
 		
 		for (i in 1:length(axes))
 		{
@@ -473,7 +473,7 @@ plot.CommunityClimateStatistics <- function(x, deviations=FALSE, axisnames=NULL,
 			}
 		}
 		
-		st <- data.frame(delta=x@deviations$deviation_volumeMagnitude, lambda=x@deviations$deviation_lagMagnitude)
+		st <- data.frame(delta=x@deviations$deviation_volumeMagnitude, lambda=x@deviations$deviation_mismatchMagnitude)
 		
 		title(main=substitute(paste(delta == dval, ", ",~ lambda == lval, sep=""), list(dval=round(st$delta,digits=3), lval=round(st$lambda,digits=3))),outer=TRUE)
 		
