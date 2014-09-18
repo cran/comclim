@@ -1,5 +1,5 @@
 setClass("CommunityClimateStatistics",slots=c(obsStats="list",nullStats="list",deviations="list"))
-setClass("CommunityClimateInput",slots=c(species_list_t1="character", regional_pool_t1="character", regional_pool_weights_t1="numeric", climate_niches_t1="data.frame", observed_climate_t2="numeric"))
+setClass("CommunityClimateInput",slots=c(species_list_tinf="character", regional_pool_tinf="character", regional_pool_weights_tinf="numeric", climate_niches_tinf="data.frame", observed_climate_tobs="numeric"))
 
 getnichesforspecieslist <- function(speciesnames, obs, climateaxes,verbose)
 {
@@ -129,14 +129,21 @@ pvalue_twotailed <- function(observed, nulldistribution)
 	null_rescaled <- nulldistribution - mean(nulldistribution, na.rm=TRUE)
 
 	result <- NULL
-	if (observed_rescaled < 0)
-	{
-		return(2*length(which(observed_rescaled > null_rescaled))/length(null_rescaled))
-	}
-	else
-	{
-		return(2*length(which(observed_rescaled < null_rescaled))/length(null_rescaled))
-	}
+  if (!is.na(observed_rescaled))
+  {
+  	if (observed_rescaled < 0)
+  	{
+  		return(2*length(which(observed_rescaled > null_rescaled))/length(null_rescaled))
+  	}
+  	else
+  	{
+  		return(2*length(which(observed_rescaled < null_rescaled))/length(null_rescaled))
+  	}
+  }
+  else
+  {
+    return(NA)
+  }
 }
 
 
@@ -170,55 +177,55 @@ assigndeviations <- function(observed, null)
 	return(list(deviation_volumeMagnitude=deviation_volumeMagnitude, deviation_mismatchMagnitude=deviation_mismatchMagnitude, deviation_mismatchDirections=deviation_mismatchDirections))
 }
 
-communityclimate <- function(object, climateaxes=NULL, numreplicates=50, numsamplesperspecies=10,verbose=TRUE)
+communityclimate <- function(object, climateaxes=NULL, numreplicates=100, numsamplesperspecies=100,verbose=TRUE)
 {		
-	species_list_t1 = object@species_list_t1
-	regional_pool_t1 = object@ regional_pool_t1
-	regional_pool_weights_t1=object@regional_pool_weights_t1
-	climate_niches_t1 = object@climate_niches_t1
-	observed_climate_t2 = object@observed_climate_t2
+	species_list_tinf = object@species_list_tinf
+	regional_pool_tinf = object@ regional_pool_tinf
+	regional_pool_weights_tinf=object@regional_pool_weights_tinf
+	climate_niches_tinf = object@climate_niches_tinf
+	observed_climate_tobs = object@observed_climate_tobs
 	
 	# use default set of axes from the observed climate
 	if (is.null(climateaxes))
 	{
-		climateaxes = names(observed_climate_t2)
+		climateaxes = names(observed_climate_tobs)
 	}
 	# equiprobable draws from the regional pool as default
-	if (length(regional_pool_weights_t1) == 0)
+	if (length(regional_pool_weights_tinf) == 0)
 	{
-		regional_pool_weights_t1 = rep(1, length(regional_pool_t1))
+		regional_pool_weights_tinf = rep(1, length(regional_pool_tinf))
 	}
 
 	# check input
-	if (!all(species_list_t1 %in% climate_niches_t1$taxon))
+	if (!all(species_list_tinf %in% climate_niches_tinf$taxon))
 	{
-		warning(sprintf('Not all species in community found in climate niche data. Missing species will not be sampled:\n%s', paste(species_list_t1[(!species_list_t1 %in% climate_niches_t1$taxon)],collapse="\n")))
+		warning(sprintf('Not all species in community found in climate niche data. Missing species will not be sampled:\n%s', paste(species_list_tinf[(!species_list_tinf %in% climate_niches_tinf$taxon)],collapse="\n")))
 	}
-	if (!all(regional_pool_t1 %in% climate_niches_t1$taxon))
+	if (!all(regional_pool_tinf %in% climate_niches_tinf$taxon))
 	{
-		warning(sprintf('Not all species in regional pool found in climate niche data. Missing species will not be sampled:\n\t%s', paste(species_list_t1[(! regional_pool_t1 %in% climate_niches_t1$taxon)],collapse="\n\t")))
+		warning(sprintf('Not all species in regional pool found in climate niche data. Missing species will not be sampled:\n\t%s', paste(species_list_tinf[(! regional_pool_tinf %in% climate_niches_tinf$taxon)],collapse="\n\t")))
 	}
-	if (!all(climateaxes %in% names(climate_niches_t1)))
+	if (!all(climateaxes %in% names(climate_niches_tinf)))
 	{
 		stop('Requested axes not found in climate niche data')
 	}
-	if (!all(climateaxes %in% names(observed_climate_t2)))
+	if (!all(climateaxes %in% names(observed_climate_tobs)))
 	{
 		stop('Requested axes not found in observed climate data')
 	}
 	
 	# subset the climate niches for speed
-	climate_niches_t1 <- subset(climate_niches_t1, climate_niches_t1$taxon %in% union(species_list_t1, regional_pool_t1))
+	climate_niches_tinf <- subset(climate_niches_tinf, climate_niches_tinf$taxon %in% union(species_list_tinf, regional_pool_tinf))
 
 	# get observed statistics
 	if (verbose)
 	{
 		cat('*** Observed statistics ***\n')
 	}
-	samples <- samplepointsfromnicheofspecieslist(specieslist=species_list_t1, obs=climate_niches_t1,
+	samples <- samplepointsfromnicheofspecieslist(specieslist=species_list_tinf, obs=climate_niches_tinf,
 		climateaxes=climateaxes, numsamplesperspecies=numsamplesperspecies,verbose=verbose)
 
-	stats <- computestatisticsfromsamples(samples, observed_climate_t2[climateaxes])
+	stats <- computestatisticsfromsamples(samples, observed_climate_tobs[climateaxes])
 	
 	avgstats <- averagestatisticsacrossreplicates(stats)
 
@@ -231,11 +238,11 @@ communityclimate <- function(object, climateaxes=NULL, numreplicates=50, numsamp
 			cat(sprintf('*** Null statistics (%d / %d) ***\n', i, numreplicates))
 		}
 		# sample from the regional pool preserving richness
-		nulllist <- regional_pool_t1[sample(length(regional_pool_t1),size=length(species_list_t1),prob=regional_pool_weights_t1,replace=TRUE)]
+		nulllist <- regional_pool_tinf[sample(length(regional_pool_tinf),size=length(species_list_tinf),prob=regional_pool_weights_tinf,replace=TRUE)]
 		
-		samples_null <- samplepointsfromnicheofspecieslist(specieslist=nulllist, obs=climate_niches_t1, 
+		samples_null <- samplepointsfromnicheofspecieslist(specieslist=nulllist, obs=climate_niches_tinf, 
 		climateaxes=climateaxes, numsamplesperspecies=numsamplesperspecies,verbose=verbose)
-		stats_null <- computestatisticsfromsamples(samples_null, observed_climate_t2[climateaxes])
+		stats_null <- computestatisticsfromsamples(samples_null, observed_climate_tobs[climateaxes])
 		avgstats_null <- averagestatisticsacrossreplicates(stats_null)
 		
 		null_distribution[[i]] <- avgstats_null
@@ -399,8 +406,8 @@ plot.CommunityClimateStatistics <- function(x, deviations=FALSE, axisnames=NULL,
 		{
 			for (j in 1:length(climateVariables))
 			{
-				whichx <- climateVariables[i]
-				whichy <- climateVariables[j]
+				whichx <- climateVariables[j]
+				whichy <- climateVariables[i]
 				
 				if (i < j)
 				{				
@@ -483,9 +490,9 @@ plot.CommunityClimateStatistics <- function(x, deviations=FALSE, axisnames=NULL,
 
 plot.CommunityClimateInput <- function(x, climateaxes=NULL, axisnames=NULL, cex.community=0.5, cex.pool=0.25, pch.community=16, pch.pool=16, colors="rainbow", ...)
 {
-	climateniches = x@climate_niches_t1
-	localcommunity = x@species_list_t1
-	regionalpool = x@regional_pool_t1
+	climateniches = x@climate_niches_tinf
+	localcommunity = x@species_list_tinf
+	regionalpool = x@regional_pool_tinf
 	
 	if (is.null(climateaxes))
 	{
@@ -545,11 +552,11 @@ generatedemodata <- function(num_regionalpool = 50, num_community = 5, num_occur
 inputcommunitydata <- function(localcommunity, regionalpool, regionalpoolweights=numeric(), climateniches, observedclimate)
 {
 	object <- new("CommunityClimateInput", 
-		species_list_t1 = localcommunity, 
-		regional_pool_t1 = regionalpool, 
-		regional_pool_weights_t1 = regionalpoolweights,
-		climate_niches_t1 = climateniches, 
-		observed_climate_t2 = observedclimate)
+		species_list_tinf = localcommunity, 
+		regional_pool_tinf = regionalpool, 
+		regional_pool_weights_tinf = regionalpoolweights,
+		climate_niches_tinf = climateniches, 
+		observed_climate_tobs = observedclimate)
 	
 	return(object)	
 }

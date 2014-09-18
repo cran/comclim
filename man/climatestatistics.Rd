@@ -18,11 +18,11 @@ A CommunityClimateStatistics object
 }
 \value{
 A named list:
-\item{meanNiches }{A dataframe with columns corresponding to climate axes, and one row for each species in the community. Each observation is the mean climate niche of that species at t1.}
-\item{inferredClimate }{A vector with names corresponding to climate axes, representing the inferred climate determined by overlapping niches of all species in the community at t1.}
-\item{observedClimate }{A vector with names corresponding to climate axes, representing the observed climate at t2.}
-\item{volumeMagnitude}{A number representing the climate volume at t1 (Delta)}
-\item{mismatchMagnitude}{A number representing the magnitude of the climate mismatch at t1 relative to the climate at t2 (Lambda)}
-\item{mismatchDirections}{A vector with names corresponding to climate axes, representing the climate mismatch projected along each axis at t1 relative to the climate at t2.}
+\item{meanNiches }{A dataframe with columns corresponding to climate axes, and one row for each species in the community. Each observation is the mean climate niche of that species at tinf.}
+\item{inferredClimate }{A vector with names corresponding to climate axes, representing the inferred climate determined by overlapping niches of all species in the community at tinf.}
+\item{observedClimate }{A vector with names corresponding to climate axes, representing the observed climate at tobs.}
+\item{volumeMagnitude}{A number representing the climate volume at tinf (Delta)}
+\item{mismatchMagnitude}{A number representing the magnitude of the climate mismatch at tinf relative to the climate at tobs (Lambda)}
+\item{mismatchDirections}{A vector with names corresponding to climate axes, representing the climate mismatch projected along each axis at tinf relative to the climate at tobs.}
 %% ...
 }
