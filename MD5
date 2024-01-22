@@ -1,10 +1,10 @@
-c1f5626328582ec6f0fa08f114731fcb *DESCRIPTION
+ee31f2546cb9ff129d892cadcdd23d4d *DESCRIPTION
 0e40a4653986118681bc28419a348552 *NAMESPACE
 9b2dc15489ccebcf5c7439f70bc6a4d4 *R/comclim.R
-6f3b4a100bfef451a805b9f5aec8b1ec *build/vignette.rds
+5657f9b348ae2ee237138f4095e75ecb *build/vignette.rds
 cb7bc389d47fbedbbbdc62dcc3472504 *inst/doc/comclim.R
 b016c61f5a7244b6ed92745260a74c6e *inst/doc/comclim.Rnw
-8e9de139cf0c9de45413f04b65994b5e *inst/doc/comclim.pdf
+15b8c6496c6aa18737b3ec9c1dc9705f *inst/doc/comclim.pdf
 eb0526db8df8b81e74658b8c60bdab0f *man/CommunityClimateInput-class.Rd
 697edcaec183f1ed8f849430e6a6e189 *man/CommunityClimateStatistics-class.Rd
 0e4e71f536b6ad1c3059321b1ea13e50 *man/climatedeviations.Rd
@@ -15,6 +15,6 @@ eb0526db8df8b81e74658b8c60bdab0f *man/CommunityClimateInput-class.Rd
 94486170e5babaad8bf2f2a16d8dd57d *man/inputcommunitydata.Rd
 c7d8cca575749bccf5b95beaf5c652a5 *man/plot.CommunityClimateInput.Rd
 ceb17eb53ba77ba02315541703be6e60 *man/plot.CommunityClimateStatistics.Rd
-fcc241f642175f407a6cbe0de1db828e *man/summary.CommunityClimateInput.Rd
-d8378f662b6e42978a32d20b035aaee6 *man/summary.CommunityClimateStatistics.Rd
+9659e30b27e6161c6e82e6a0fce60a67 *man/summary.CommunityClimateInput.Rd
+9a2cd659dcfa772ddcf33d30f2b2a0f8 *man/summary.CommunityClimateStatistics.Rd
 b016c61f5a7244b6ed92745260a74c6e *vignettes/comclim.Rnw
